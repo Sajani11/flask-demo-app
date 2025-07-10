@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>
+      Interactive Panda Login Form | Panda Closes Eyes on Password Input 🐼 |
+      HTML CSS JavaScript
+    </title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(to right, #e0eafc, #cfdef3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .container {
+        display: flex;
+        width: 800px;
+        background-color: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+      }
+
+      .welcome-box {
+        width: 40%;
+        background-color: #5b8df8;
+        color: white;
+        padding: 60px 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+        text-align: center;
+      }
+
+      .form-box {
+        width: 60%;
+        padding: 50px;
+        position: relative; /* Needed for positioning the panda */
+      }
+
+      .form-box h2 {
+        margin-bottom: 30px;
+        font-size: 24px;
+        text-align: center;
+      }
+
+      .input-group {
+        position: relative;
+        margin-bottom: 20px;
+      }
+
+      .input-group input {
+        width: 100%;
+        padding: 12px 40px 12px 15px;
+        border: 1px solid #ccc;
+        border-radius: 30px;
+        outline: none;
+        transition: border 0.3s ease;
+      }
+
+      .input-group input:focus {
+        border-color: #5b8df8;
+      }
+
+      .input-group i {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #888;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        background-color: #5b8df8;
+        color: white;
+        font-size: 16px;
+        border-radius: 30px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      .or {
+        text-align: center;
+        margin: 15px 0;
+        font-size: 13px;
+        color: #666;
+      }
+
+      .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+      }
+
+      .social-icons i {
+        font-size: 18px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .social-icons i:hover {
+        background-color: #5b8df8;
+        color: white;
+        border-color: #5b8df8;
+      }
+
+      /* Panda Holding the Form */
+      .panda {
+        position: absolute;
+        bottom: -40px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 200px;
+        z-index: -1;
+      }
+
+      /* Animation for Panda Eyes */
+      .panda-closed-eyes .eyes {
+        transform: scale(0); /* Close eyes */
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .panda-open-eyes .eyes {
+        transform: scale(1); /* Open eyes */
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .eyes {
+        position: absolute;
+        top: 30%;
+        left: 25%;
+        width: 50px;
+        height: 50px;
+        background-color: #fff;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .eyes::before,
+      .eyes::after {
+        content: "";
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: black;
+        border-radius: 50%;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      .eyes::before {
+        left: 25%;
+      }
+
+      .eyes::after {
+        right: 25%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="welcome-box">
+        <h2>Hello, Welcome!</h2>
+        <p>Don't have an account?</p>
+        <a href="#">Register</a>
+      </div>
+
+      <div class="form-box">
+        <h2>Login</h2>
+        <form method="POST" action="{{ url_for('choose_auth') }}">
+          <input type="hidden" name="action" value="login" />
+          <div class="input-group">
+            <input type="text" name="email" placeholder="Username" required />
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="input-group">
+            <input
+              id="password"
+              type="password"
+              name="password"
+              placeholder="Password"
+              required
+              oninput="closePandaEyes()"
+            />
+            <i class="fas fa-lock"></i>
+            <button type="button" onclick="togglePasswordVisibility()">
+              👀
+            </button>
+          </div>
+          <div class="btn">
+            <button type="submit">Login</button>
+          </div>
+          <p class="or">or login with social platforms</p>
+          <div class="social-icons">
+            <i class="fab fa-google"></i>
+            <i class="fab fa-facebook"></i>
+            <i class="fab fa-github"></i>
+            <i class="fab fa-linkedin"></i>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Panda Image -->
+    <div class="panda" id="panda">
+      <img src="static/image/panda.jpg" alt="Panda" />
+      <div class="eyes"></div>
+    </div>
+
+    <script>
+      let passwordField = document.getElementById("password");
+      let panda = document.getElementById("panda");
+
+      // Function to close panda's eyes when typing password
+      function closePandaEyes() {
+        panda.classList.add("panda-closed-eyes");
+        panda.classList.remove("panda-open-eyes");
+      }
+
+      // Function to toggle password visibility and open panda's eyes
+      function togglePasswordVisibility() {
+        if (passwordField.type === "password") {
+          passwordField.type = "text";
+          panda.classList.remove("panda-closed-eyes");
+          panda.classList.add("panda-open-eyes");
+        } else {
+          passwordField.type = "password";
+          panda.classList.remove("panda-open-eyes");
+          panda.classList.add("panda-closed-eyes");
+        }
+      }
+    </script>
+  </body>
+</html>

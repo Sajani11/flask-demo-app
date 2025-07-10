@@ -1,0 +1,79 @@
+{% extends "layout.html" %} {% block content %}
+<h2>Student Admission Form</h2>
+
+{% if error %}
+<p style="color: red">{{ error }}</p>
+{% endif %}
+
+<form method="POST">
+  <label>Full Name:</label><br />
+  <input
+    type="text"
+    name="txtfullname"
+    placeholder="Enter full name"
+    value="{{ form_data.name }}"
+    required
+  /><br /><br />
+
+  <label>Address:</label><br />
+  <input
+    type="text"
+    name="txtAddress"
+    placeholder="Enter address"
+    value="{{ form_data.address }}"
+    required
+  /><br /><br />
+  <label>Gender:</label><br />
+  <input type="radio" name="gender" value="male" {% if form_data.gender ==
+  'male' %}checked{% endif %}> Male <input type="radio" name="gender"
+  value="female" {% if form_data.gender == 'female' %}checked{% endif %}> Female
+  <input type="radio" name="gender" value="other" {% if form_data.gender ==
+  'other' %}checked{% endif %}> Other
+  <br /><br />
+  <label>Class:</label><br />
+  <input
+    type="number"
+    name="Class"
+    placeholder="Enter class"
+    value="{{ form_data.class }}"
+    required
+  /><br /><br />
+
+  <label>Phone Number:</label><br />
+  <input
+    type="tel"
+    name="phone_num"
+    placeholder="Enter phone number"
+    value="{{ form_data.phone_number }}"
+    required
+  /><br /><br />
+
+  <label>Admission Date:</label><br />
+  <input
+    type="date"
+    name="Admissiondate"
+    value="{{ form_data.admission_date }}"
+    required
+  /><br /><br />
+
+  <label>Parent Contact Number:</label><br />
+  <input
+    type="tel"
+    name="parent_num"
+    placeholder="Enter parent's contact number"
+    value="{{ form_data.parent_contact_number }}"
+    required
+  /><br /><br />
+
+  <label>Age:</label><br />
+  <input
+    type="number"
+    name="Age"
+    placeholder="Enter age"
+    value="{{ form_data.age }}"
+    required
+  /><br /><br />
+
+  <input type="submit" value="Save" />
+</form>
+{% endblock %}

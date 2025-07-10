@@ -1,0 +1,27 @@
+{% extends "layout.html" %} {% block content %}
+<h2>Signup Form</h2>
+
+{% if error %}
+<p style="color: red">{{ error }}</p>
+{% endif %}
+
+<form method="POST">
+  <input
+    type="text"
+    name="name"
+    placeholder="Full Name"
+    value="{{ form_data.name }}"
+  /><br />
+  <input
+    type="email"
+    name="email"
+    placeholder="Email"
+    value="{{ form_data.email }}"
+  /><br />
+  <input type="password" name="password" placeholder="Password" /><br />
+  <input type="password" name="repass" placeholder="Retype Password" /><br />
+  <input type="submit" value="Signup" />
+</form>
+
+<p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+{% endblock %}
